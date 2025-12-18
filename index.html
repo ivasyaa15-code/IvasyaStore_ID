@@ -22,59 +22,61 @@ const games=[
     ]
   },
   {
-    name:'PUBG Mobile',
-    img:'pubg.png',
-    items:[
-      {n:'60 UC',h:'Rp15.000'},
-      {n:'180 UC',h:'Rp45.000'}
-    ]
-  },
-  {
     name:'Genshin Impact',
     img:'genshin.png',
-    badge:'POPULER',
     items:[
       {n:'60 Genesis',h:'Rp15.000'},
       {n:'300 Genesis',h:'Rp75.000'}
     ]
   },
   {
-    name:'Honkai Star Rail',
-    img:'hsr.png',
+    name:'PUBG Mobile',
+    img:'pubg.png',
     items:[
-      {n:'60 Oneiric',h:'Rp15.000'},
-      {n:'300 Oneiric',h:'Rp75.000'}
-    ]
-  },
-  {
-    name:'Call of Duty Mobile',
-    img:'codm.png',
-    items:[
-      {n:'80 CP',h:'Rp15.000'},
-      {n:'420 CP',h:'Rp75.000'}
-    ]
-  },
-  {
-    name:'Valorant',
-    img:'valorant.png',
-    items:[
-      {n:'420 VP',h:'Rp50.000'},
-      {n:'700 VP',h:'Rp80.000'}
-    ]
-  },
-  {
-    name:'Roblox',
-    img:'roblox.png',
-    items:[
-      {n:'400 Robux',h:'Rp75.000'},
-      {n:'800 Robux',h:'Rp145.000'}
+      {n:'60 UC',h:'Rp15.000'},
+      {n:'180 UC',h:'Rp45.000'}
     ]
   }
 ];
 
 const container=document.getElementById('games');
 
+/* RENDER GAME */
 function render(list){
   container.innerHTML='';
   list.forEach(g=>{
-    const c=document.createElement('div'
+    const c=document.createElement('div');
+    c.className='game-card';
+    c.innerHTML=`
+      ${g.badge?`<div class="badge ${g.badge=='HOT'?'hot':''}">${g.badge}</div>`:''}
+      <img src="${g.img}">
+      <div class="game-info">
+        <h3>${g.name}</h3>
+        <div class="hint">Pilih Nominal</div>
+      </div>`;
+    c.onclick=()=>openModal(g);
+    container.appendChild(c);
+  });
+}
+render(games);
+
+/* MODAL NOMINAL */
+function openModal(game){
+  modalTitle.innerText=game.name;
+  modalBody.innerHTML='';
+
+  game.items.forEach(d=>{
+    const btn=document.createElement('a');
+    btn.className='order-btn';
+    btn.href=`https://wa.me/${wa}?text=Halo%20IvasyaStore%0AGame:%20${encodeURIComponent(game.name)}%0ANominal:%20${encodeURIComponent(d.n)}%0AHarga:%20${encodeURIComponent(d.h)}`;
+    btn.innerText=`${d.n} – ${d.h}`;
+    modalBody.appendChild(btn);
+  });
+
+  modal.style.display='flex';
+}
+
+function closeModal(){
+  modal.style.display='none';
+}
+</script>
