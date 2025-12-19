@@ -1,60 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IvasyaStore – Top Up Game</title>
+
+<style>
+:root{
+  --bg:#0b1220;
+  --card:#111827;
+  --border:#1f2937;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --primary:#2563eb;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system;
+  background:var(--bg);
+  color:var(--text)
+}
+header{
+  padding:18px;
+  border-bottom:1px solid var(--border)
+}
+header h1{
+  margin:0;
+  font-size:24px;
+  color:#60a5fa
+}
+header p{
+  margin:6px 0 0;
+  font-size:13px;
+  color:var(--muted)
+}
+
+.container{max-width:1200px;margin:auto;padding:20px}
+
+.search{
+  width:100%;
+  padding:12px 14px;
+  border-radius:10px;
+  background:#020617;
+  border:1px solid var(--border);
+  color:var(--text);
+  margin-bottom:20px;
+  font-size:14px
+}
+
+.games{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:16px
+}
+.game{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  cursor:pointer;
+  overflow:hidden;
+  transition:.15s
+}
+.game:hover{transform:translateY(-3px)}
+.game img{
+  width:100%;
+  height:120px;
+  object-fit:cover
+}
+.game div{
+  padding:12px;
+  font-weight:600;
+  font-size:14px;
+  text-align:center
+}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:99
+}
+.modal-box{
+  width:100%;
+  max-width:420px;
+  background:var(--card);
+  border-radius:14px;
+  border:1px solid var(--border)
+}
+.modal-header{
+  padding:14px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center
+}
+.modal-body{
+  padding:14px;
+  display:grid;
+  gap:10px
+}
+.close{
+  cursor:pointer;
+  font-size:20px;
+  color:var(--muted)
+}
+.btn{
+  padding:12px;
+  background:var(--primary);
+  color:white;
+  text-decoration:none;
+  border-radius:10px;
+  text-align:center;
+  font-weight:600
+}
+.btn:hover{opacity:.9}
+
+footer{
+  text-align:center;
+  padding:18px;
+  font-size:12px;
+  color:var(--muted)
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>IvasyaStore</h1>
+  <p>Pilih Game → Pilih Nominal → WhatsApp</p>
+</header>
+
+<div class="container">
+  <input class="search" placeholder="Cari game..." onkeyup="searchGame(this.value)">
+
+  <div class="games" id="games"></div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <b id="title"></b>
+      <span class="close" onclick="closeModal()">×</span>
+    </div>
+    <div class="modal-body" id="list"></div>
+  </div>
+</div>
+
+<footer>© 2025 IvasyaStore</footer>
+
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+const wa="6285797758961";
 
-const wa='6285797758961';
-
-const modal = document.getElementById('modal');
-const modalTitle = document.getElementById('modalTitle');
-const modalBody = document.getElementById('modalBody');
-const container = document.getElementById('games');
-
-if(!container){
-  console.error("DIV #games TIDAK DITEMUKAN");
-  return;
-}
-
-const games=[
-  {
-    name:'Mobile Legends',
-    img:'ml.jpg',
-    items:[
-      {n:'86 Diamond',h:'Rp18.000'},
-      {n:'172 Diamond',h:'Rp36.000'}
-    ]
+const gamesData={
+  "Mobile Legends":{
+    img:"https://i.imgur.com/8zQZQZP.jpg",
+    items:["86 Diamond","172 Diamond","344 Diamond"]
+  },
+  "Free Fire":{
+    img:"https://i.imgur.com/eZx5Q5J.jpg",
+    items:["70 Diamond","140 Diamond","355 Diamond"]
+  },
+  "PUBG Mobile":{
+    img:"https://i.imgur.com/1YcYc4P.jpg",
+    items:["60 UC","180 UC","325 UC"]
+  },
+  "Genshin Impact":{
+    img:"https://i.imgur.com/6ZQZQ8A.jpg",
+    items:["60 GC","300 GC"]
+  },
+  "Valorant":{
+    img:"https://i.imgur.com/0bKxK0H.jpg",
+    items:["125 VP","420 VP","700 VP"]
+  },
+  "Roblox":{
+    img:"https://i.imgur.com/1xQpKpA.jpg",
+    items:["400 Robux","800 Robux"]
   }
-];
+};
 
-function render(){
-  games.forEach(g=>{
-    const c=document.createElement('div');
-    c.className='game-card';
-    c.innerHTML=`
-      <img src="${g.img}">
-      <div class="game-info">
-        <h3>${g.name}</h3>
-        <div class="hint">Pilih Nominal</div>
-      </div>`;
-    c.onclick=()=>openModal(g);
-    container.appendChild(c);
+const gamesEl=document.getElementById("games");
+
+function renderGames(filter=""){
+  gamesEl.innerHTML="";
+  Object.keys(gamesData).forEach(g=>{
+    if(!g.toLowerCase().includes(filter.toLowerCase())) return;
+    const d=gamesData[g];
+    const div=document.createElement("div");
+    div.className="game";
+    div.innerHTML=`<img src="${d.img}"><div>${g}</div>`;
+    div.onclick=()=>openGame(g);
+    gamesEl.appendChild(div);
   });
 }
 
-function openModal(game){
-  modalTitle.innerText=game.name;
-  modalBody.innerHTML='';
-  game.items.forEach(d=>{
-    const a=document.createElement('a');
-    a.className='order-btn';
-    a.href=`https://wa.me/${wa}?text=Game:${game.name}%0ANominal:${d.n}%0AHarga:${d.h}`;
-    a.innerText=`${d.n} – ${d.h}`;
-    modalBody.appendChild(a);
+function searchGame(v){renderGames(v)}
+
+function openGame(game){
+  document.getElementById("title").innerText=game;
+  const list=document.getElementById("list");
+  list.innerHTML="";
+  gamesData[game].items.forEach(n=>{
+    const a=document.createElement("a");
+    a.className="btn";
+    a.href=`https://wa.me/${wa}?text=Halo%20IvasyaStore%0AGame:%20${encodeURIComponent(game)}%0ANominal:%20${encodeURIComponent(n)}`;
+    a.innerText=n;
+    list.appendChild(a);
   });
-  modal.style.display='flex';
+  document.getElementById("modal").style.display="flex";
 }
+function closeModal(){document.getElementById("modal").style.display="none"}
 
-window.closeModal = ()=> modal.style.display='none';
-
-render();
-
-});
+renderGames();
 </script>
+
+</body>
+</html>
