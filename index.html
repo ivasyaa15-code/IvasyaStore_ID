@@ -20,11 +20,11 @@
     header p{margin:0;font-size:13px;color:var(--muted)}
 
     .container{max-width:1200px;margin:auto;padding:26px 20px 40px}
-    .games{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:22px}
+    .games{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:22px;align-items:stretch}
 
-    .game-card{background:var(--card);border-radius:18px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.45);cursor:pointer}
-    .game-card img{width:100%;height:150px;object-fit:cover}
-    .game-info{padding:14px}
+    .game-card{background:var(--card);border-radius:18px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.45);cursor:pointer;display:flex;flex-direction:column;height:100%}
+    .game-card img{width:100%;height:140px;object-fit:cover;flex-shrink:0}
+    .game-info{padding:14px;display:flex;flex-direction:column;justify-content:space-between;flex:1}
     .game-info h3{margin:0 0 6px;font-size:17px}
     .hint{font-size:12px;color:var(--muted)}
 
