@@ -1,199 +1,142 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IvasyaStore – Top Up Game</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IvasyaStore</title>
 
 <style>
-:root{
-  --bg:#0b1220;
-  --card:#111827;
-  --border:#1f2937;
-  --text:#e5e7eb;
-  --muted:#9ca3af;
-  --primary:#2563eb;
-}
-*{box-sizing:border-box}
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 body{
-  margin:0;
-  font-family:system-ui,-apple-system;
-  background:var(--bg);
-  color:var(--text)
+margin:0;
+background:radial-gradient(circle at top,#0f172a,#020617);
+color:#fff;
 }
 header{
-  padding:20px;
-  border-bottom:1px solid var(--border)
+padding:20px 30px;
+border-bottom:1px solid #1e293b;
 }
 header h1{
-  margin:0;
-  font-size:26px;
-  color:#60a5fa
+margin:0;
+color:#60a5fa;
 }
 header p{
-  margin:6px 0 0;
-  font-size:13px;
-  color:var(--muted)
+margin:6px 0 0;
+color:#94a3b8;
+font-size:14px;
 }
 
-.container{max-width:1200px;margin:auto;padding:20px}
+.container{
+max-width:1200px;
+margin:30px auto;
+padding:0 20px;
+}
 
 .search{
-  width:100%;
-  padding:12px 14px;
-  border-radius:10px;
-  background:#020617;
-  border:1px solid var(--border);
-  color:var(--text);
-  margin-bottom:22px;
-  font-size:14px
+width:100%;
+padding:14px 16px;
+border-radius:12px;
+border:1px solid #1e293b;
+background:#020617;
+color:#fff;
+font-size:15px;
+margin-bottom:25px;
 }
 
 .games{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:16px
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:20px;
 }
 
 .game{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:26px 10px;
-  text-align:center;
-  font-weight:600;
-  cursor:pointer;
-  transition:.15s
+background:linear-gradient(180deg,#0b1220,#020617);
+border:1px solid #1e293b;
+border-radius:18px;
+padding:16px;
+text-align:center;
+cursor:pointer;
+transition:.25s;
 }
 .game:hover{
-  transform:translateY(-3px);
-  border-color:#3b82f6
+transform:translateY(-6px);
+border-color:#60a5fa;
 }
 
-/* MODAL */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.65);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:99
+.game img{
+width:80px;
+height:80px;
+object-fit:contain;
+margin-bottom:12px;
 }
-.modal-box{
-  width:100%;
-  max-width:420px;
-  background:var(--card);
-  border-radius:14px;
-  border:1px solid var(--border)
+
+.game h3{
+margin:0;
+font-size:15px;
 }
-.modal-header{
-  padding:14px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  justify-content:space-between;
-  align-items:center
-}
-.modal-body{
-  padding:14px;
-  display:grid;
-  gap:10px
-}
-.close{
-  cursor:pointer;
-  font-size:20px;
-  color:var(--muted)
-}
-.btn{
-  padding:12px;
-  background:var(--primary);
-  color:white;
-  text-decoration:none;
-  border-radius:10px;
-  text-align:center;
-  font-weight:600
-}
-.btn:hover{opacity:.9}
 
 footer{
-  text-align:center;
-  padding:18px;
-  font-size:12px;
-  color:var(--muted)
+text-align:center;
+padding:40px 0;
+color:#64748b;
+font-size:13px;
 }
 </style>
 </head>
+
 <body>
 
 <header>
-  <h1>IvasyaStore</h1>
-  <p>Pilih Game → Pilih Nominal → WhatsApp</p>
+<h1>IvasyaStore</h1>
+<p>Pilih Game → Pilih Nominal → WhatsApp</p>
 </header>
 
 <div class="container">
-  <input class="search" placeholder="Cari game..." onkeyup="searchGame(this.value)">
-  <div class="games" id="games"></div>
-</div>
+<input class="search" id="search" placeholder="Cari game..." onkeyup="searchGame()"/>
 
-<div class="modal" id="modal">
-  <div class="modal-box">
-    <div class="modal-header">
-      <b id="title"></b>
-      <span class="close" onclick="closeModal()">×</span>
-    </div>
-    <div class="modal-body" id="list"></div>
+<div class="games" id="games">
+  <div class="game" data-name="mobile legends">
+    <img src="https://upload.wikimedia.org/wikipedia/en/9/9f/Mobile_Legends_Bang_Bang_Logo.png">
+    <h3>Mobile Legends</h3>
   </div>
+
+  <div class="game" data-name="free fire">
+    <img src="https://upload.wikimedia.org/wikipedia/en/c/c5/Garena_Free_Fire_Logo.png">
+    <h3>Free Fire</h3>
+  </div>
+
+  <div class="game" data-name="pubg mobile">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/PUBG_Mobile_Logo.svg">
+    <h3>PUBG Mobile</h3>
+  </div>
+
+  <div class="game" data-name="genshin impact">
+    <img src="https://upload.wikimedia.org/wikipedia/en/5/5d/Genshin_Impact_logo.svg">
+    <h3>Genshin Impact</h3>
+  </div>
+
+  <div class="game" data-name="valorant">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Valorant_logo.svg">
+    <h3>Valorant</h3>
+  </div>
+
+  <div class="game" data-name="roblox">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Roblox_Logo_2022.svg">
+    <h3>Roblox</h3>
+  </div>
+</div>
 </div>
 
 <footer>© 2025 IvasyaStore</footer>
 
 <script>
-const wa = "6285797758961";
-
-const gamesData = {
-  "Mobile Legends": ["86 Diamond","172 Diamond","344 Diamond"],
-  "Free Fire": ["70 Diamond","140 Diamond","355 Diamond"],
-  "PUBG Mobile": ["60 UC","180 UC","325 UC"],
-  "Genshin Impact": ["60 Genesis Crystal","300 Genesis Crystal"],
-  "Valorant": ["125 VP","420 VP","700 VP"],
-  "Roblox": ["400 Robux","800 Robux"]
-};
-
-const gamesEl = document.getElementById("games");
-
-function renderGames(filter=""){
-  gamesEl.innerHTML="";
-  Object.keys(gamesData).forEach(game=>{
-    if(!game.toLowerCase().includes(filter.toLowerCase())) return;
-    const div=document.createElement("div");
-    div.className="game";
-    div.innerText=game;
-    div.onclick=()=>openGame(game);
-    gamesEl.appendChild(div);
-  });
+function searchGame(){
+let input=document.getElementById("search").value.toLowerCase();
+let games=document.querySelectorAll(".game");
+games.forEach(g=>{
+g.style.display=g.dataset.name.includes(input)?"block":"none";
+});
 }
-
-function searchGame(v){ renderGames(v); }
-
-function openGame(game){
-  document.getElementById("title").innerText=game;
-  const list=document.getElementById("list");
-  list.innerHTML="";
-  gamesData[game].forEach(n=>{
-    const a=document.createElement("a");
-    a.className="btn";
-    a.href=`https://wa.me/${wa}?text=Halo%20IvasyaStore%0AGame:%20${encodeURIComponent(game)}%0ANominal:%20${encodeURIComponent(n)}`;
-    a.innerText=n;
-    list.appendChild(a);
-  });
-  document.getElementById("modal").style.display="flex";
-}
-
-function closeModal(){
-  document.getElementById("modal").style.display="none";
-}
-
-renderGames();
 </script>
 
 </body>
