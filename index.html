@@ -1,177 +1,267 @@
 <!DOCTYPE html>
+
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IvasyaStore – Top Up Game</title>
-
+  <title>IvasyaStore - Top Up Game</title>
   <style>
-    :root{
-      --bg:#0b1220;--card:#020617;--header:#0f172a;--border:#1e293b;
-      --primary:#22c55e;--primary-hover:#16a34a;
-      --text:#e5e7eb;--muted:#94a3b8;--accent:#38bdf8;
+    :root {
+      --bg: #0b1220;
+      --card: #0f1a2b;
+      --primary: #00d4ff;
+      --text: #ffffff;
+      --muted: #9ca3af;
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui;background:var(--bg);color:var(--text)}
 
-    header{background:var(--header);border-bottom:1px solid var(--border)}
-    .header-inner{max-width:1200px;margin:auto;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-    header h1{margin:0;font-size:26px;color:var(--accent)}
-    header p{margin:0;font-size:13px;color:var(--muted)}
+```
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
-    .container{max-width:1200px;margin:auto;padding:26px 20px 40px}
-    .games{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:22px;align-items:stretch}
+body {
+  background: linear-gradient(180deg, #050b18, #0b1220);
+  color: var(--text);
+}
 
-    .game-card{background:linear-gradient(180deg,#020617,#020617dd);border-radius:18px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.45);cursor:pointer;display:flex;flex-direction:column;height:100%;transition:.25s ease}
-    .game-card img{width:100%;height:140px;object-fit:cover;flex-shrink:0}
-    .game-info{padding:14px;display:flex;flex-direction:column;justify-content:space-between;flex:1}
-    .game-info h3{margin:0 0 6px;font-size:17px}
-    .hint{font-size:12px;color:var(--muted)}
+header {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid #1f2937;
+}
 
-    /* MODAL */
-    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;z-index:99}
-    .modal-box{background:var(--card);width:100%;max-width:420px;border-radius:18px;overflow:hidden}
-    .modal-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-    .modal-header h3{margin:0;font-size:18px}
-    .close{cursor:pointer;font-size:20px;color:var(--muted)}
-    .modal-body{padding:16px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+header h1 {
+  color: var(--primary);
+  font-size: 28px;
+}
 
-    .order-btn{display:block;text-align:center;padding:12px;border-radius:10px;background:var(--primary);color:#052e16;text-decoration:none;font-weight:600}
-    .order-btn:hover{background:var(--primary-hover);color:#ecfdf5}
+header p {
+  color: var(--muted);
+  margin-top: 6px;
+}
 
-    footer{border-top:1px solid var(--border);text-align:center;padding:26px;font-size:12px;color:var(--muted);background:#020617}
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 24px;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.game-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.game-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.game-card h3 {
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.game-card p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+}
+
+.modal-content {
+  background: var(--card);
+  width: 90%;
+  max-width: 420px;
+  border-radius: 16px;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: scale(0.9)}
+  to {opacity: 1; transform: scale(1)}
+}
+
+.modal-content h2 {
+  margin-bottom: 12px;
+  color: var(--primary);
+}
+
+.nominal {
+  background: #111827;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.nominal:hover {
+  background: #1f2937;
+}
+
+.close {
+  text-align: center;
+  margin-top: 12px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
+  font-size: 12px;
+}
+```
+
   </style>
 </head>
 <body>
 
 <header>
-  <div class="header-inner">
-    <div>
-      <h1>IvasyaStore</h1>
-      <p>Pilih Game → Pilih Nominal → WhatsApp</p>
-    </div>
-    <p>CS WA: 0857-9775-8961</p>
-  </div>
+  <h1>IvasyaStore</h1>
+  <p>Pilih Game → Nominal → WhatsApp</p>
 </header>
 
 <div class="container">
-  <div class="games">
+  <div class="games-grid">
 
-    <div class="game-card" onclick="openModal('Mobile Legends',ml)">
-      <img src="ml.jpg" />
-      <div class="game-info"><h3>Mobile Legends</h3><div class="hint">Tap untuk pilih nominal</div></div>
-    </div>
+```
+<div class="game-card" onclick="openModal('Mobile Legends')">
+  <img src="images/ml.jpg">
+  <h3>Mobile Legends</h3>
+  <p>Top up MLBB</p>
+</div>
 
-    <div class="game-card" onclick="openModal('Free Fire',ff)">
-      <img src="ff.jpg" />
-      <div class="game-info"><h3>Free Fire</h3><div class="hint">Tap untuk pilih nominal</div></div>
-    </div>
+<div class="game-card" onclick="openModal('Free Fire')">
+  <img src="images/ff.jpg">
+  <h3>Free Fire</h3>
+  <p>Top up FF</p>
+</div>
 
-    <div class="game-card" onclick="openModal('PUBG Mobile',pubg)">
-      <img src="pubg.jpg" />
-      <div class="game-info"><h3>PUBG Mobile</h3><div class="hint">Tap untuk pilih nominal</div></div>
-    </div>
+<div class="game-card" onclick="openModal('PUBG Mobile')">
+  <img src="images/pubg.jpg">
+  <h3>PUBG Mobile</h3>
+  <p>Top up UC</p>
+</div>
 
-    <div class="game-card" onclick="openModal('Roblox',roblox)">
-      <img src="roblox.jpg" />
-      <div class="game-info"><h3>Roblox</h3><div class="hint">Tap untuk pilih nominal</div></div>
-    </div>
+<div class="game-card" onclick="openModal('Roblox')">
+  <img src="images/roblox.jpg">
+  <h3>Roblox</h3>
+  <p>Robux</p>
+</div>
 
-    <div class="game-card" onclick="openModal('Genshin Impact',genshin)">
-      <img src="genshin.jpg" />
-      <div class="game-info"><h3>Genshin Impact</h3><div class="hint">Tap untuk pilih nominal</div></div>
-    </div>
+<div class="game-card" onclick="openModal('Genshin Impact')">
+  <img src="images/genshin.jpg">
+  <h3>Genshin Impact</h3>
+  <p>Genesis Crystal</p>
+</div>
 
-    <div class="game-card" onclick="openModal('OPM Strongest SEA',opm)">
-      <img src="opm.jpg" />
-      <div class="game-info"><h3>OPM Strongest SEA</h3><div class="hint">Tap untuk pilih nominal
+<div class="game-card" onclick="openModal('OPM Strongest SEA')">
+  <img src="images/opm.jpg">
+  <h3>OPM Strongest SEA</h3>
+  <p>Coupon / Pack</p>
+</div>
 
-    <div class="game-card" onclick="openModal('Valorant',valorant)">
-      <img src="valorant.jpg" />
-      <div class="game-info"><h3>Valorant</h3><div class="hint">Tap untuk pilih nominal</div></div>
-    </div>
+<div class="game-card" onclick="openModal('Valorant')">
+  <img src="images/valorant.jpg">
+  <h3>Valorant</h3>
+  <p>VP</p>
+</div>
 
-    <div class="game-card" onclick="openModal('Call of Duty Mobile',codm)">
-      <img src="codm.jpg" />
-      <div class="game-info"><h3>COD Mobile</h3><div class="hint">Tap untuk pilih nominal</div></div>
-    </div>
+<div class="game-card" onclick="openModal('COD Mobile')">
+  <img src="images/codm.jpg">
+  <h3>COD Mobile</h3>
+  <p>CP</p>
+</div>
 
-    <div class="game-card" onclick="openModal('Bleach Soul Resonance',bleach)">
-      <img src="bleach.jpg" />
-      <div class="game-info"><h3>Bleach Soul Resonance</h3><div class="hint">Tap untuk pilih nominal</div></div>
-    </div>
+<div class="game-card" onclick="openModal('Honor of Kings')">
+  <img src="images/hok.jpg">
+  <h3>Honor of Kings</h3>
+  <p>Top up</p>
+</div>
 
-    <div class="game-card" onclick="openModal('Honor of Kings',hok)">
-      <img src="hok.jpg" />
-      <div class="game-info"><h3>Honor of Kings</h3><div class="hint">Tap untuk pilih nominal</div></div>
-    </div>
-
-    <div class="game-card" onclick="openModal('Haikyuu!! Fly High',haikyu)">
-      <img src="haikyu.jpg" />
-      <div class="game-info"><h3>Haikyuu!! Fly High</h3><div class="hint">Tap untuk pilih nominal</div></div>
-    </div>
-    </div>
+<div class="game-card" onclick="openModal('Haikyuu Fly High')">
+  <img src="images/haikyu.jpg">
+  <h3>Haikyuu Fly High</h3>
+  <p>Top up</p>
+</div>
+```
 
   </div>
-</div>
-</div>
 </div>
 
 <!-- MODAL -->
+
 <div class="modal" id="modal">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h3 id="modalTitle"></h3>
-      <div class="close" onclick="closeModal()">×</div>
-    </div>
-    <div class="modal-body" id="modalBody"></div>
+  <div class="modal-content">
+    <h2 id="gameTitle"></h2>
+
+```
+<div class="nominal" onclick="order('86 Diamond - Rp 20.000')">86 Diamond - Rp 20.000</div>
+<div class="nominal" onclick="order('172 Diamond - Rp 40.000')">172 Diamond - Rp 40.000</div>
+<div class="nominal" onclick="order('257 Diamond - Rp 60.000')">257 Diamond - Rp 60.000</div>
+<div class="nominal" onclick="order('514 Diamond - Rp 120.000')">514 Diamond - Rp 120.000</div>
+
+<div class="close" onclick="closeModal()">Tutup</div>
+```
+
   </div>
 </div>
 
-<footer>© 2025 IvasyaStore</footer>
+<footer>
+  © 2025 IvasyaStore • Order via WhatsApp
+</footer>
 
 <script>
-const wa='6285797758961';
+  let selectedGame = '';
 
-const ml=[
-  {n:'86 Diamond',h:'Rp18.000'},
-  {n:'172 Diamond',h:'Rp36.000'},
-  {n:'344 Diamond',h:'Rp72.000'}
-];
-const ff=[
-  {n:'70 Diamond',h:'Rp10.000'},
-  {n:'140 Diamond',h:'Rp20.000'}
-];
-const pubg=[
-  {n:'60 UC',h:'Rp15.000'},
-  {n:'180 UC',h:'Rp45.000'}
-];
-const roblox=[
-  {n:'400 Robux',h:'Rp75.000'},
-  {n:'800 Robux',h:'Rp145.000'}
-];
-const genshin=[
-  {n:'60 GC',h:'Rp15.000'},
-  {n:'300 GC',h:'Rp75.000'}
-];
-const opm=[
-  {n:'Monthly Card',h:'Rp79.000'}
-];
+  function openModal(game) {
+    selectedGame = game;
+    document.getElementById('gameTitle').innerText = game;
+    document.getElementById('modal').style.display = 'flex';
+  }
 
-function openModal(game,data){
-  document.getElementById('modalTitle').innerText=game;
-  const body=document.getElementById('modalBody');
-  body.innerHTML='';
-  data.forEach(d=>{
-    const a=document.createElement('a');
-    a.className='order-btn';
-    a.href=`https://wa.me/${wa}?text=Halo%20IvasyaStore%0AGame:%20${encodeURIComponent(game)}%0ANominal:%20${encodeURIComponent(d.n)}%0AHarga:%20${encodeURIComponent(d.h)}`;
-    a.innerText=`${d.n} – ${d.h}`;
-    body.appendChild(a);
-  });
-  document.getElementById('modal').style.display='flex';
-}
-function closeModal(){document.getElementById('modal').style.display='none'}
+  function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+  }
+
+  function order(nominal) {
+    const wa = '6285797758961';
+    const text = encodeURIComponent(`Halo IvasyaStore, saya mau top up ${selectedGame} (${nominal})`);
+    window.open(`https://wa.me/${wa}?text=${text}`, '_blank');
+  }
 </script>
 
 </body>
